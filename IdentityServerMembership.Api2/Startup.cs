@@ -31,7 +31,7 @@ namespace IdentityServerMembership.Api2
               opts =>
               {
                   opts.Authority = Configuration.GetSection("IdentityServerUrl").Value;
-                  opts.Audience = "resource_api2";
+                  opts.Audience = "ResourceApi2";
               });
             services.AddControllers();
             services.AddSwaggerGen(c =>
