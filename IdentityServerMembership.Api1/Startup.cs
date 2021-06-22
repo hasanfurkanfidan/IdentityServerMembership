@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,9 +32,19 @@ namespace IdentityServerMembership.Api1
                 opts =>
                 {
                     opts.Authority = Configuration.GetSection("IdentityServerUrl").Value;
-                    opts.Audience = "ResourceApi1";                   
+                    opts.Audience = "ResourceApi1";
                 });
-
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("ReadProduct", policy =>
+                {
+                    policy.RequireClaim("scope","api1.read");
+                });
+                opt.AddPolicy("UpdateOrCreate", policy =>
+                {
+                    policy.RequireClaim("scope", new[] { "api1.write", "api1.update" });
+                });
+            });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

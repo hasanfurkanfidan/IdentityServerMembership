@@ -14,11 +14,18 @@ namespace IdentityServerMembership.Api1.Controllers
     public class ProductsController : ControllerBase
     {
         [HttpGet]
-        [Authorize]
+        [Authorize(Policy ="ReadProduct")]
         public async Task<IActionResult> GetProducts()
         {
             var productList = new List<Product> { new Product { Id = 1, Name = "Product1" }, new Product { Id = 2, Name = "Product2" } };
             return Ok(productList);
+        }
+        [HttpPost]
+        [Authorize(Policy = "UpdateOrCreate")]
+
+        public async Task<IActionResult>AddProduct(Product product)
+        {
+            return Ok(product);
         }
     }
 }
