@@ -1,5 +1,5 @@
 AuthServer=>https://localhost:5001
 Client1=>https://localhost:5002
 Client2=>https://localhost:5003
-Api1=>https://localhost:5005
-Api2=>https://localhost:5007
+Api1=>https://localhost:5006
+Api2=>https://localhost:5008
