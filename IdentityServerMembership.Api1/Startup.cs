@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +27,12 @@ namespace IdentityServerMembership.Api1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
+                opts =>
+                {
+                    opts.Authority = Configuration.GetSection("IdentityServerUrl").Value;
+                    opts.Audience = "resource_api1";                   
+                });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -47,7 +54,7 @@ namespace IdentityServerMembership.Api1
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
