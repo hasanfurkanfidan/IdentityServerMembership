@@ -1,4 +1,5 @@
 ﻿using IdentityServerMembership.Api1.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,6 +14,7 @@ namespace IdentityServerMembership.Api1.Controllers
     public class ProductsController : ControllerBase
     {
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetProducts()
         {
             var productList = new List<Product> { new Product { Id = 1, Name = "Product1" }, new Product { Id = 2, Name = "Product2" } };

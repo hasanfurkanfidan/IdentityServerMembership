@@ -31,7 +31,7 @@ namespace IdentityServerMembership.Api1
                 opts =>
                 {
                     opts.Authority = Configuration.GetSection("IdentityServerUrl").Value;
-                    opts.Audience = "resource_api1";                   
+                    opts.Audience = "ResourceApi1";                   
                 });
 
             services.AddControllers();
