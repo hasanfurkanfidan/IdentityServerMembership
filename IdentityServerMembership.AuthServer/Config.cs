@@ -18,10 +18,10 @@ namespace IdentityServerMembership.AuthServer
         {
             return new List<ApiScope>
             {
-                new ApiScope("ap1.read","Api 1 için okuma izni"),
+                new ApiScope("api1.read","Api 1 için okuma izni"),
                 new ApiScope("api1.write","Api 1 için yazma izni"),
                 new ApiScope("api1.update","Api 1 için güncelleme izni"),
-                new ApiScope("ap2.read","Api 2 için okuma izni"),
+                new ApiScope("api2.read","Api 2 için okuma izni"),
                 new ApiScope("api2.write","Api 2 için yazma izni"),
                 new ApiScope("api2.update","Api 2 için güncelleme izni"),
 
@@ -45,7 +45,7 @@ namespace IdentityServerMembership.AuthServer
                     ClientName = "Client2",
                     ClientSecrets = new List<Secret>{new Secret("secret".Sha256())},
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    AllowedScopes = {"api2.read,api1.write"}
+                    AllowedScopes = {"api2.read","api1.write"}
                 }
             };
         }
