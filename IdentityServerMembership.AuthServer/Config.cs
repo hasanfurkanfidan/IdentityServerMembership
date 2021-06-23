@@ -10,7 +10,7 @@ namespace IdentityServerMembership.AuthServer
         public static IEnumerable<ApiResource> GetApiResources()
         {
             return new List<ApiResource> {
-                new ApiResource("ResourceApi1") {Scopes={"api1.read","api1.write","api1.update" } },
+                new ApiResource("ResourceApi1") {Scopes={"api1.read","api1.write","api1.update" },ApiSecrets=new[]{new Secret("secretapi.1".Sha256()) } },
                 new ApiResource("ResourceApi2"){Scopes = { "api2.write","api2.read","api2.update"} }
             };
         }
