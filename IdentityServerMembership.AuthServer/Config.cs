@@ -1,7 +1,9 @@
 ﻿using IdentityServer4.Models;
+using IdentityServer4.Test;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 namespace IdentityServerMembership.AuthServer
 {
@@ -14,6 +16,16 @@ namespace IdentityServerMembership.AuthServer
                 new ApiResource("ResourceApi2"){Scopes = { "api2.write","api2.read","api2.update"} }
             };
         }
+        public static IEnumerable<IdentityResource> GetIdentityResources()
+        {
+            return new List<IdentityResource>
+            {
+               new  IdentityResources.OpenId(),//subId
+               new IdentityResources.Profile()
+
+            };
+        }
+
         public static IEnumerable<ApiScope> GetApiScopes()
         {
             return new List<ApiScope>
@@ -47,6 +59,34 @@ namespace IdentityServerMembership.AuthServer
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     AllowedScopes = {"api2.read","api1.write"}
                 }
+            };
+        }
+        public static List<TestUser> GetUsers()
+        {
+            return new List<TestUser>
+            {
+                new TestUser
+                {
+                    SubjectId="1",
+                    Username = "furkanfidan.job@gmail.com",
+                    Password = "106673",
+                    Claims = GetClaims("Furkan","Fidan")
+                },
+                 new TestUser
+                {
+                    SubjectId="2",
+                    Username = "furkanturanjobjob@gmail.com",
+                    Password = "106673",
+                    Claims = GetClaims("Furkan","Turan")
+                }
+            };
+        }
+       public static List<Claim> GetClaims(string name,string surname)
+        {
+            return new List<Claim>
+            {
+                new Claim("name",name),
+                new Claim("family-name",surname)
             };
         }
     }
