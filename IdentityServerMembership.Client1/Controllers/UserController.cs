@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,12 @@ namespace IdentityServerMembership.Client1.Controllers
         {
             
             return View();
+        }
+        public async Task Logout()
+        {
+            await HttpContext.SignOutAsync("Cookie1");
+            await HttpContext.SignOutAsync("oidc");
+
         }
     }
 }

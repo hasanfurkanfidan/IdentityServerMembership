@@ -65,17 +65,15 @@ namespace IdentityServerMembership.AuthServer
                     ClientId="Client1-Mvc",
                     RequirePkce=false,
                     ClientName ="Client MVC APP" ,
+                    PostLogoutRedirectUris = new List<string>{ "https://localhost:5002/signout-callback-oidc" },
                     ClientSecrets = new List<Secret>{new Secret("secret".Sha256())},
                     AllowedGrantTypes = GrantTypes.Hybrid,
                     RedirectUris = new List<string>(){ "https://localhost:5002/signin-oidc" },
                     AllowedScopes = {IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile,"api1.read",IdentityServerConstants.StandardScopes.OfflineAccess },
                     AllowOfflineAccess = true,
-                    AccessTokenLifetime = DateTime.Now.AddHours(2).Second,
+                    AccessTokenLifetime = 2*60*60,
                     RefreshTokenUsage = TokenUsage.ReUse,
-                    SlidingRefreshTokenLifetime = DateTime.Now.AddDays(60).Second,
-
-
-                    
+                    SlidingRefreshTokenLifetime =Convert.ToInt32( (DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds),             
                 }
             };
         }

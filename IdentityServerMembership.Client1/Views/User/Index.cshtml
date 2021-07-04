@@ -7,7 +7,7 @@
 @using System.Security.Claims
 <h3>Bu sayfayı sadece üye olan kullanıcılar görebilir</h3>
 <h4>Kulanıcı Idsi:@User.Claims.Where(p=>p.Type==ClaimTypes.NameIdentifier).FirstOrDefault().Value</h4>
-
+<a asp-action="LogOut" asp-controller="User" class="btn btn-danger">Çıkış Yap</a>
 <h4>Claim dataları:</h4>
 <table>
     <thead>
