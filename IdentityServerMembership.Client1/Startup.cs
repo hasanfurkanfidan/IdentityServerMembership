@@ -23,6 +23,25 @@ namespace IdentityServerMembership.Client1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = "Cookie1";
+                options.DefaultChallengeScheme = "oidc";
+
+
+
+            }).AddCookie("Cookie1").AddOpenIdConnect("oidc", opt =>
+            {
+                opt.SignInScheme = "Cookie1";
+                opt.Authority = "https://localhost:5001";
+                opt.ClientId = "Client1-Mvc";
+                opt.ClientSecret = "secret";
+                opt.ResponseType = "code id_token";
+                opt.GetClaimsFromUserInfoEndpoint = true;
+                opt.SaveTokens = true;
+                opt.Scope.Add("api1.read");
+                opt.Scope.Add("offline_access");
+            });
             services.AddControllersWithViews();
         }
 
@@ -43,7 +62,7 @@ namespace IdentityServerMembership.Client1
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

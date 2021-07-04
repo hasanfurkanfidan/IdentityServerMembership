@@ -1,4 +1,5 @@
-﻿using IdentityServer4.Models;
+﻿using IdentityServer4;
+using IdentityServer4.Models;
 using IdentityServer4.Test;
 using System;
 using System.Collections.Generic;
@@ -58,6 +59,23 @@ namespace IdentityServerMembership.AuthServer
                     ClientSecrets = new List<Secret>{new Secret("secret".Sha256())},
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     AllowedScopes = {"api2.read","api1.write"}
+                },
+                new Client()
+                {
+                    ClientId="Client1-Mvc",
+                    RequirePkce=false,
+                    ClientName ="Client MVC APP" ,
+                    ClientSecrets = new List<Secret>{new Secret("secret".Sha256())},
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    RedirectUris = new List<string>(){ "https://localhost:5002/signin-oidc" },
+                    AllowedScopes = {IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile,"api1.read",IdentityServerConstants.StandardScopes.OfflineAccess },
+                    AllowOfflineAccess = true,
+                    AccessTokenLifetime = DateTime.Now.AddHours(2).Second,
+                    RefreshTokenUsage = TokenUsage.ReUse,
+                    SlidingRefreshTokenLifetime = DateTime.Now.AddDays(60).Second,
+
+
+                    
                 }
             };
         }
@@ -81,12 +99,12 @@ namespace IdentityServerMembership.AuthServer
                 }
             };
         }
-       public static List<Claim> GetClaims(string name,string surname)
+        public static List<Claim> GetClaims(string name, string surname)
         {
             return new List<Claim>
             {
-                new Claim("name",name),
-                new Claim("family-name",surname)
+                new Claim("given_name",name),
+                new Claim("family_name",surname)
             };
         }
     }
