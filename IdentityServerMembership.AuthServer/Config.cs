@@ -73,7 +73,8 @@ namespace IdentityServerMembership.AuthServer
                     AllowOfflineAccess = true,
                     AccessTokenLifetime = 2*60*60,
                     RefreshTokenUsage = TokenUsage.ReUse,
-                    SlidingRefreshTokenLifetime =Convert.ToInt32( (DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds),             
+                    SlidingRefreshTokenLifetime =Convert.ToInt32( (DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds),
+                    RequireConsent = true
                 }
             };
         }
