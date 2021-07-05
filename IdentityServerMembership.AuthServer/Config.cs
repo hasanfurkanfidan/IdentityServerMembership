@@ -80,7 +80,27 @@ namespace IdentityServerMembership.AuthServer
                     AccessTokenLifetime = 2*60*60,
                     RefreshTokenUsage = TokenUsage.ReUse,
                     SlidingRefreshTokenLifetime =Convert.ToInt32( (DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds),
-                    RequireConsent = true,
+                    RequireConsent = false,
+
+
+                },
+                  new Client()
+                {
+                    ClientId="Client2-Mvc",
+                    RequirePkce=false,
+                    ClientName ="Client MVC APP" ,
+                    PostLogoutRedirectUris = new List<string>{ "https://localhost:5004/signout-callback-oidc" },
+                    ClientSecrets = new List<Secret>{new Secret("secret".Sha256())},
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    RedirectUris = new List<string>(){ "https://localhost:5004/signin-oidc" },
+                    AllowedScopes = {IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile,"api1.read",IdentityServerConstants.StandardScopes.OfflineAccess
+                    ,"CountryAndCity","Roles"
+                    },
+                    AllowOfflineAccess = true,
+                    AccessTokenLifetime = 2*60*60,
+                    RefreshTokenUsage = TokenUsage.ReUse,
+                    SlidingRefreshTokenLifetime =Convert.ToInt32( (DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds),
+                    RequireConsent = false,
 
 
                 }

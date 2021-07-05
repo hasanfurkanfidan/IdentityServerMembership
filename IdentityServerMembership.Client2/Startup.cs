@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -23,6 +24,39 @@ namespace IdentityServerMembership.Client2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = "Cookie2";
+                options.DefaultChallengeScheme = "oidc";
+
+
+
+            }).AddCookie("Cookie2", p =>
+            {
+                p.AccessDeniedPath = "/Home/AccessDenied";
+
+            }).AddOpenIdConnect("oidc", opt =>
+            {
+                opt.SignInScheme = "Cookie2";
+                opt.Authority = "https://localhost:5001";
+                opt.ClientId = "Client2-Mvc";
+                opt.ClientSecret = "secret";
+                opt.ResponseType = "code id_token";
+                opt.GetClaimsFromUserInfoEndpoint = true;
+                opt.SaveTokens = true;
+                opt.Scope.Add("api1.read");
+                opt.Scope.Add("offline_access");
+                opt.Scope.Add("CountryAndCity");
+                opt.ClaimActions.MapUniqueJsonKey("country", "country");
+                opt.ClaimActions.MapUniqueJsonKey("city", "city");
+                opt.Scope.Add("Roles");
+                opt.ClaimActions.MapUniqueJsonKey("role", "role");
+                opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    RoleClaimType = "role"
+                };
+
+            });
             services.AddControllersWithViews();
         }
 
@@ -43,7 +77,7 @@ namespace IdentityServerMembership.Client2
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

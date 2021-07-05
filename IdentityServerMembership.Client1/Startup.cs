@@ -31,7 +31,11 @@ namespace IdentityServerMembership.Client1
 
 
 
-            }).AddCookie("Cookie1").AddOpenIdConnect("oidc", opt =>
+            }).AddCookie("Cookie1", p =>
+            {
+                p.AccessDeniedPath = "/Home/AccessDenied";
+
+            }).AddOpenIdConnect("oidc", opt =>
             {
                 opt.SignInScheme = "Cookie1";
                 opt.Authority = "https://localhost:5001";
