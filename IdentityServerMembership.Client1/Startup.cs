@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -41,6 +42,16 @@ namespace IdentityServerMembership.Client1
                 opt.SaveTokens = true;
                 opt.Scope.Add("api1.read");
                 opt.Scope.Add("offline_access");
+                opt.Scope.Add("CountryAndCity");
+                opt.ClaimActions.MapUniqueJsonKey("country", "country");
+                opt.ClaimActions.MapUniqueJsonKey("city", "city");
+                opt.Scope.Add("Roles");
+                opt.ClaimActions.MapUniqueJsonKey("role", "role");
+                opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    RoleClaimType = "role"
+                };
+
             });
             services.AddControllersWithViews();
         }

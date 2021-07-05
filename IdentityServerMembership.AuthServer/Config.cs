@@ -22,7 +22,11 @@ namespace IdentityServerMembership.AuthServer
             return new List<IdentityResource>
             {
                new  IdentityResources.OpenId(),//subId
-               new IdentityResources.Profile()
+               new IdentityResources.Profile(),
+               new IdentityResource(){Name="CountryAndCity",DisplayName="CountryAndCity",Description = "Kullanıcının ülke ve şehir bilgisi"
+              ,UserClaims = new[]{"country","city"}
+               },
+               new IdentityResource(){Name="Roles",DisplayName="Roles",Description="Kullanıcı Rolleri",UserClaims=new[]{"role" } }
 
             };
         }
@@ -69,12 +73,16 @@ namespace IdentityServerMembership.AuthServer
                     ClientSecrets = new List<Secret>{new Secret("secret".Sha256())},
                     AllowedGrantTypes = GrantTypes.Hybrid,
                     RedirectUris = new List<string>(){ "https://localhost:5002/signin-oidc" },
-                    AllowedScopes = {IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile,"api1.read",IdentityServerConstants.StandardScopes.OfflineAccess },
+                    AllowedScopes = {IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile,"api1.read",IdentityServerConstants.StandardScopes.OfflineAccess
+                    ,"CountryAndCity","Roles"
+                    },
                     AllowOfflineAccess = true,
                     AccessTokenLifetime = 2*60*60,
                     RefreshTokenUsage = TokenUsage.ReUse,
                     SlidingRefreshTokenLifetime =Convert.ToInt32( (DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds),
-                    RequireConsent = true
+                    RequireConsent = true,
+
+
                 }
             };
         }
@@ -87,23 +95,21 @@ namespace IdentityServerMembership.AuthServer
                     SubjectId="1",
                     Username = "furkanfidan.job@gmail.com",
                     Password = "106673",
-                    Claims = GetClaims("Furkan","Fidan")
+                    Claims = GetClaims("Furkan","Fidan","Türkiye","Tekirdağ",
+                    "Admin")
                 },
-                 new TestUser
-                {
-                    SubjectId="2",
-                    Username = "furkanturanjobjob@gmail.com",
-                    Password = "106673",
-                    Claims = GetClaims("Furkan","Turan")
-                }
+
             };
         }
-        public static List<Claim> GetClaims(string name, string surname)
+        public static List<Claim> GetClaims(string name, string surname, string country, string city,string role)
         {
             return new List<Claim>
             {
                 new Claim("given_name",name),
-                new Claim("family_name",surname)
+                new Claim("family_name",surname),
+                new Claim("country",country),
+                new Claim("city",city),
+                new Claim("role",role)
             };
         }
     }
