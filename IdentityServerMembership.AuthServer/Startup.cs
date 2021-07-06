@@ -1,4 +1,5 @@
 using IdentityServerMembership.AuthServer.Models;
+using IdentityServerMembership.AuthServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,10 +26,12 @@ namespace IdentityServerMembership.AuthServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddDbContext<CustomDbContext>(option =>
             {
                 option.UseSqlServer("Data Source=localhost\\SQLEXPRESS01;Database=CustomIdentityLearning;Integrated Security=true;");
             });
+            services.AddScoped<ICustomUserRepository, CustomUserRepository>();
             services.AddIdentityServer().AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryApiScopes(Config.GetApiScopes()).AddInMemoryClients(Config.GetClients())
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
