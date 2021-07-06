@@ -55,6 +55,9 @@ namespace IdentityServerMembership.Client1
                 {
                     RoleClaimType = "role"
                 };
+                opt.Scope.Add("Email");
+                opt.ClaimActions.MapUniqueJsonKey("email", "email");
+
 
             });
             services.AddControllersWithViews();

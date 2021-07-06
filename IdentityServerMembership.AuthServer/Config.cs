@@ -26,7 +26,8 @@ namespace IdentityServerMembership.AuthServer
                new IdentityResource(){Name="CountryAndCity",DisplayName="CountryAndCity",Description = "Kullanıcının ülke ve şehir bilgisi"
               ,UserClaims = new[]{"country","city"}
                },
-               new IdentityResource(){Name="Roles",DisplayName="Roles",Description="Kullanıcı Rolleri",UserClaims=new[]{"role" } }
+               new IdentityResource(){Name="Roles",DisplayName="Roles",Description="Kullanıcı Rolleri",UserClaims=new[]{"role" } },
+               new IdentityResource(){Name="Email",DisplayName="Email",Description="Email",UserClaims=new []{"email" } }
 
             };
         }
@@ -74,7 +75,7 @@ namespace IdentityServerMembership.AuthServer
                     AllowedGrantTypes = GrantTypes.Hybrid,
                     RedirectUris = new List<string>(){ "https://localhost:5002/signin-oidc" },
                     AllowedScopes = {IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile,"api1.read",IdentityServerConstants.StandardScopes.OfflineAccess
-                    ,"CountryAndCity","Roles"
+                    ,"CountryAndCity","Roles","Email"
                     },
                     AllowOfflineAccess = true,
                     AccessTokenLifetime = 2*60*60,

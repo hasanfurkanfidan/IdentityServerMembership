@@ -32,6 +32,7 @@ namespace IdentityServerMembership.AuthServer
                 option.UseSqlServer("Data Source=localhost\\SQLEXPRESS01;Database=CustomIdentityLearning;Integrated Security=true;");
             });
             services.AddScoped<ICustomUserRepository, CustomUserRepository>();
+            services.AddScoped<IdentityServer4.Services.IProfileService, CustomProfileService>();
             services.AddIdentityServer().AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryApiScopes(Config.GetApiScopes()).AddInMemoryClients(Config.GetClients())
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
