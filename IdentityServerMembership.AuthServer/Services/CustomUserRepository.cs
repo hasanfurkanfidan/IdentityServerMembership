@@ -16,32 +16,29 @@ namespace IdentityServerMembership.AuthServer.Services
         }
         public async Task<CustomUser> FindByEmailAsync(string email)
         {
-            using (_context)
-            {
+           
                 return await _context.CustomUsers.Where(p => p.Email == email).FirstOrDefaultAsync();
-            }
+            
 
         }
 
         public async Task<CustomUser> FindByIdAsync(int id)
         {
-            using (_context)
-            {
+           
                 return await _context.CustomUsers.Where(p => p.Id == id).FirstOrDefaultAsync();
-            }
+            
         }
 
         public async Task<bool> ValidateAsync(string email, string password)
         {
-            using (_context)
-            {
+           
                 var user = await _context.CustomUsers.Where(p => p.Email == email && p.Password == password).FirstOrDefaultAsync();
                 if (user==null)
                 {
                     return false;
                 }
                 return true;
-            }
+            
         }
     }
 }
