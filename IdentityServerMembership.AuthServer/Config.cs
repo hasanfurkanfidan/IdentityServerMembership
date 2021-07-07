@@ -27,7 +27,8 @@ namespace IdentityServerMembership.AuthServer
               ,UserClaims = new[]{"country","city"}
                },
                new IdentityResource(){Name="Roles",DisplayName="Roles",Description="Kullanıcı Rolleri",UserClaims=new[]{"role" } },
-               new IdentityResource(){Name="Email",DisplayName="Email",Description="Email",UserClaims=new []{"email" } }
+               new IdentityResource(){Name="Email",DisplayName="Email",Description="Email",UserClaims=new []{"email" } },
+               new IdentityResource(){Name="UserName",DisplayName="UserName",Description="UserName",UserClaims=new []{"name" } },
 
             };
         }
@@ -126,7 +127,7 @@ namespace IdentityServerMembership.AuthServer
                     ClientSecrets = new List<Secret>{new Secret("secret".Sha256())},
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     AllowedScopes = {IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile,"api1.read",IdentityServerConstants.StandardScopes.OfflineAccess
-                    ,"CountryAndCity","Roles","Email"
+                    ,"CountryAndCity","Roles","Email","UserName"
                     },
                     AllowOfflineAccess = true,
                     AccessTokenLifetime = 2*60*60,

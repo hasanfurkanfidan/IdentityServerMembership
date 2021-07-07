@@ -26,10 +26,11 @@ namespace IdentityServerMembership.Client1.Controllers
 
             return View();
         }
-        public async Task Logout()
+        public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("Cookie1");
-            await HttpContext.SignOutAsync("oidc");
+            return RedirectToAction("Index", "Home");
+            //await HttpContext.SignOutAsync("oidc");
 
         }
         public async Task<IActionResult> GetRefreshToken()
@@ -88,12 +89,12 @@ namespace IdentityServerMembership.Client1.Controllers
 
             return RedirectToAction("Index");
         }
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="admin")]
         public IActionResult AdminAction()
         {
             return View();
         }
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "customer")]
 
         public IActionResult CustomerAction()
         {

@@ -1,6 +1,7 @@
 ﻿using IdentityModel.Client;
 using IdentityServerMembership.Client1.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -46,14 +47,14 @@ namespace IdentityServerMembership.Client1.Controllers
                 passwordTokenRequest.ClientSecret = _configuration["ClientResourceOwner:ClientSecret"];
                 passwordTokenRequest.UserName = model.Email;
                 passwordTokenRequest.Password = model.Password;
-
+             
 
                 var result = await client.RequestPasswordTokenAsync(passwordTokenRequest);
                 if (result.IsError)
                 {
                     //Hata Logla
-                    ModelState.AddModelError("", result.Error);
-                    return View();
+                    ModelState.AddModelError("", "Kullanıcı adı yada şifre hatalı");
+                    return View(model);
                 }
 
                 var userInfoRequest = new UserInfoRequest();
@@ -69,10 +70,10 @@ namespace IdentityServerMembership.Client1.Controllers
 
                 //Claims saved
 
-                ClaimsIdentity claimsIdentity = new ClaimsIdentity(userInfoResult.Claims, "Cookie1");
+                ClaimsIdentity claimsIdentity = new ClaimsIdentity(userInfoResult.Claims, CookieAuthenticationDefaults.AuthenticationScheme,"name","role");
 
                 var claimPrincipal = new ClaimsPrincipal(claimsIdentity);
-
+               
                 var authProperties = new AuthenticationProperties();
 
                 authProperties.StoreTokens(new List<AuthenticationToken>
@@ -99,9 +100,16 @@ namespace IdentityServerMembership.Client1.Controllers
                     },
                 }); ;
 
-                await HttpContext.SignInAsync(claimPrincipal,authProperties);
+                if (model.RememberMe)
+                {
+                    authProperties.IsPersistent = true;
+                    authProperties.ExpiresUtc = DateTimeOffset.UtcNow.Add(TimeSpan.FromDays(30));
+                }
+               
+
+                await HttpContext.SignInAsync("Cookie1",claimPrincipal,authProperties);
             }
-            return View();
+            return RedirectToAction("Index", "User");
         }
     }
 }

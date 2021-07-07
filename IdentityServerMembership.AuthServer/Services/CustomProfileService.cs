@@ -25,10 +25,18 @@ namespace IdentityServerMembership.AuthServer.Services
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Email,user.Email),
-                                new Claim("UserName",user.UserName),
+                                new Claim("name",user.UserName),
                                 new Claim("City",user.City)
 
             };
+            if (user.Id == 1)
+            {
+                claims.Add(new Claim("role", "admin"));
+            }
+            else
+            {
+                claims.Add(new Claim("role", "customer"));
+            }
             context.AddRequestedClaims(claims);
         }
 

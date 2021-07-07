@@ -6,9 +6,9 @@
 @using Microsoft.AspNetCore.Authentication;
 @using System.Security.Claims
 <h3>Bu sayfayı sadece üye olan kullanıcılar görebilir</h3>
-<h4>Kulanıcı Idsi:@User.Claims.Where(p=>p.Type==ClaimTypes.NameIdentifier).FirstOrDefault().Value</h4>
 <a asp-action="LogOut" asp-controller="User" class="btn btn-danger">Çıkış Yap</a>
 <a asp-action="GetRefreshToken" asp-controller="User" class="btn btn-success">Refresh Token Yenile</a>
+<h3>Hoş geldin : @User.Identity.Name</h3>
 <h4>Claim dataları:</h4>
 <table class="table table-bordered">
     <thead>

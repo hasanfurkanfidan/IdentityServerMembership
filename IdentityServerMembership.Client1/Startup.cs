@@ -27,39 +27,43 @@ namespace IdentityServerMembership.Client1
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = "Cookie1";
-                options.DefaultChallengeScheme = "oidc";
+                //options.DefaultChallengeScheme = "oidc";
 
 
 
             }).AddCookie("Cookie1", p =>
             {
+                p.LoginPath = "/Login/Login";
                 p.AccessDeniedPath = "/Home/AccessDenied";
-
-            }).AddOpenIdConnect("oidc", opt =>
-            {
-                opt.SignInScheme = "Cookie1";
-                opt.Authority = "https://localhost:5001";
-                opt.ClientId = "Client1-Mvc";
-                opt.ClientSecret = "secret";
-                opt.ResponseType = "code id_token";
-                opt.GetClaimsFromUserInfoEndpoint = true;
-                opt.SaveTokens = true;
-                opt.Scope.Add("api1.read");
-                opt.Scope.Add("offline_access");
-                opt.Scope.Add("CountryAndCity");
-                opt.ClaimActions.MapUniqueJsonKey("country", "country");
-                opt.ClaimActions.MapUniqueJsonKey("city", "city");
-                opt.Scope.Add("Roles");
-                opt.ClaimActions.MapUniqueJsonKey("role", "role");
-                opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                {
-                    RoleClaimType = "role"
-                };
-                opt.Scope.Add("Email");
-                opt.ClaimActions.MapUniqueJsonKey("email", "email");
-
-
             });
+            //}).AddOpenIdConnect("oidc", opt =>
+            //{
+            //    opt.SignInScheme = "Cookie1";
+            //    opt.Authority = "https://localhost:5001";
+            //    opt.ClientId = "Client1-Mvc";
+            //    opt.ClientSecret = "secret";
+            //    opt.ResponseType = "code id_token";
+            //    opt.GetClaimsFromUserInfoEndpoint = true;
+            //    opt.SaveTokens = true;
+            //    opt.Scope.Add("api1.read");
+            //    opt.Scope.Add("offline_access");
+            //    opt.Scope.Add("CountryAndCity");
+            //    opt.ClaimActions.MapUniqueJsonKey("country", "country");
+            //    opt.ClaimActions.MapUniqueJsonKey("city", "city");
+            //    opt.Scope.Add("Roles");
+            //    opt.ClaimActions.MapUniqueJsonKey("role", "role");
+               
+            //    opt.Scope.Add("Email");
+            //    opt.Scope.Add("UserName");
+            //    opt.ClaimActions.MapUniqueJsonKey("email", "email");
+            //    opt.ClaimActions.MapUniqueJsonKey("name", "name");
+            //    opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+            //    {
+            //        RoleClaimType = "role",
+            //        NameClaimType = "name"
+            //    };
+
+            //});
             services.AddControllersWithViews();
         }
 
