@@ -104,7 +104,37 @@ namespace IdentityServerMembership.AuthServer
                     RequireConsent = false,
 
 
-                }
+                },
+                  new Client()
+                  {
+                      ClientId="Clientjs",
+                      RequireClientSecret = false,
+                      AllowedGrantTypes  = GrantTypes.Code,
+                      ClientName = "JsClientAngular",
+                      AllowedScopes = {IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile,"api1.read",IdentityServerConstants.StandardScopes.OfflineAccess
+                    ,"CountryAndCity","Roles","Email"
+                    },
+                      RedirectUris = {"http://localhost:4200/callback" },
+                      AllowedCorsOrigins = { "http://localhost:4200" },
+                      PostLogoutRedirectUris = { "http://localhost:4200" }
+                  },
+                       new Client()
+                {
+                    ClientId="Client1-ResourceOwner-Mvc",
+                    RequirePkce=false,
+                    ClientName ="Client MVC APP" ,
+                    ClientSecrets = new List<Secret>{new Secret("secret".Sha256())},
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                    AllowedScopes = {IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile,"api1.read",IdentityServerConstants.StandardScopes.OfflineAccess
+                    ,"CountryAndCity","Roles","Email"
+                    },
+                    AllowOfflineAccess = true,
+                    AccessTokenLifetime = 2*60*60,
+                    RefreshTokenUsage = TokenUsage.ReUse,
+                    SlidingRefreshTokenLifetime =Convert.ToInt32( (DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds),
+
+
+                },
             };
         }
         public static List<TestUser> GetUsers()
@@ -122,7 +152,7 @@ namespace IdentityServerMembership.AuthServer
 
             };
         }
-        public static List<Claim> GetClaims(string name, string surname, string country, string city,string role)
+        public static List<Claim> GetClaims(string name, string surname, string country, string city, string role)
         {
             return new List<Claim>
             {

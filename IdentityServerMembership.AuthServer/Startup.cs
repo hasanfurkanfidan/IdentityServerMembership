@@ -1,3 +1,4 @@
+using IdentityServer4.Validation;
 using IdentityServerMembership.AuthServer.Models;
 using IdentityServerMembership.AuthServer.Services;
 using Microsoft.AspNetCore.Builder;
@@ -38,6 +39,7 @@ namespace IdentityServerMembership.AuthServer
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 //.AddTestUsers(Config.GetUsers())
                 .AddDeveloperSigningCredential()
+                .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
                 ;
 
             services.AddControllersWithViews();
