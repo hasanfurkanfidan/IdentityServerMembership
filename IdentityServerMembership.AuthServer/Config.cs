@@ -147,22 +147,18 @@ namespace IdentityServerMembership.AuthServer
                     SubjectId="1",
                     Username = "furkanfidan.job@gmail.com",
                     Password = "106673",
-                    Claims = GetClaims("Furkan","Fidan","Türkiye","Tekirdağ",
-                    "Admin")
+                    Claims =new List<Claim>
+                    {
+                        new Claim("given_name","Furkan"),
+                        new Claim("family_name","Fidan"),
+                        new Claim("country","Türkiye"),
+                        new Claim("city","İstanbul"),
+                         new Claim("role","Admin")
+                    }
                 },
 
             };
         }
-        public static List<Claim> GetClaims(string name, string surname, string country, string city, string role)
-        {
-            return new List<Claim>
-            {
-                new Claim("given_name",name),
-                new Claim("family_name",surname),
-                new Claim("country",country),
-                new Claim("city",city),
-                new Claim("role",role)
-            };
-        }
+       
     }
 }

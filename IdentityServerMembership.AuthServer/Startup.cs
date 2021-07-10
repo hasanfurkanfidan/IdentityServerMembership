@@ -1,5 +1,7 @@
+using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.Validation;
 using IdentityServerMembership.AuthServer.Models;
+using IdentityServerMembership.AuthServer.Seed;
 using IdentityServerMembership.AuthServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace IdentityServerMembership.AuthServer
@@ -27,14 +30,32 @@ namespace IdentityServerMembership.AuthServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
             services.AddDbContext<CustomDbContext>(option =>
             {
                 option.UseSqlServer("Data Source=localhost\\SQLEXPRESS01;Database=CustomIdentityLearning;Integrated Security=true;");
             });
             services.AddScoped<ICustomUserRepository, CustomUserRepository>();
             services.AddScoped<IdentityServer4.Services.IProfileService, CustomProfileService>();
-            services.AddIdentityServer().AddInMemoryApiResources(Config.GetApiResources())
+
+            var assemblyName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+
+            services.AddIdentityServer()
+                .AddConfigurationStore(opt =>
+                {
+                    opt.ConfigureDbContext = c => c.UseSqlServer("Data Source=localhost\\SQLEXPRESS01;Database=CustomIdentityLearning;Integrated Security=true;", sqlopt =>
+                    {
+                        sqlopt.MigrationsAssembly(assemblyName);
+                    });
+                })
+                .AddOperationalStore(opt =>
+                {
+                    opt.ConfigureDbContext = c => c.UseSqlServer("Data Source=localhost\\SQLEXPRESS01;Database=CustomIdentityLearning;Integrated Security=true;", sqlopt =>
+                    {
+                        sqlopt.MigrationsAssembly(assemblyName);
+                    });
+                })
+                .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryApiScopes(Config.GetApiScopes()).AddInMemoryClients(Config.GetClients())
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 //.AddTestUsers(Config.GetUsers())
@@ -46,8 +67,9 @@ namespace IdentityServerMembership.AuthServer
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,ConfigurationDbContext context)
         {
+            IdentityServerSeedData.Seed(context);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
