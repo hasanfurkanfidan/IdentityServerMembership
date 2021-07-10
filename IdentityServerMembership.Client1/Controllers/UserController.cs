@@ -42,8 +42,8 @@ namespace IdentityServerMembership.Client1.Controllers
 
             var refreshTokenRequest = new RefreshTokenRequest
             {
-                ClientId = _configuration["OIdcClient:ClientId"],
-                ClientSecret = _configuration["OIdcClient:ClientSecret"],
+                ClientId = _configuration["ClientResourceOwner:ClientId"],
+                ClientSecret = _configuration["ClientResourceOwner:ClientSecret"],
                 RefreshToken = refreshToken,
                 Address = discovery.TokenEndpoint,
 
